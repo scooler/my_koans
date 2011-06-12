@@ -29,8 +29,40 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 #
 # Your goal is to write the score method.
 
-def score(dice)
-  # You need to write this method
+SCORE_MULTIPLIERS = {
+  1 => 1000,
+  2 => 100, 3 => 100, 4 => 100, 5 => 100, 6 => 100
+}
+def score(dice) #in js it would be easy - dice would have score 
+  dice_count = count_the_dice(dice)
+  
+  handle_triples(dice_count)
+  handle_fives(dice_count)
+  handle_ones(dice_count)
+  dice_count[:score]
+end
+
+def count_the_dice(dice)
+  count = {:score => 0}
+  (1..6).each {|i| count[i] = 0}
+  dice.each {|try| count[try]+= 1}
+  count
+end
+def handle_triples(dice_count)
+  (1..6).each do |i| 
+    if dice_count[i] >= 3
+      dice_count[:score] += i * SCORE_MULTIPLIERS[i]
+      dice_count[i] -= 3
+    end
+  end
+end
+
+def handle_fives(dice_count)
+  dice_count[:score] += dice_count[5]*50
+end
+
+def handle_ones(dice_count)
+  dice_count[:score] += dice_count[1] * 100
 end
 
 class AboutScoringProject < EdgeCase::Koan
