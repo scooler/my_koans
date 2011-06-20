@@ -23,8 +23,6 @@ class Proxy
 
   def method_missing(name, *args)#, &block)
     @messages << name
-    puts "Name - #{name}"
-    puts "args - #{args}"
     args.empty? ? @object.send(name) : @object.send(name, *args)
   end
 
