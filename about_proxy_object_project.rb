@@ -15,8 +15,15 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 class Proxy
   def initialize(target_object)
     @object = target_object
+    @called = []
     # ADD MORE CODE HERE
   end
+
+  def method_missing(name, *args)#, &block)
+    @called << name
+    args.empty? ? @object.send(name) : @object.send(name, args)
+  end
+
 
   # WRITE CODE HERE
 end
